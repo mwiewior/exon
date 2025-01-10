@@ -62,6 +62,8 @@ fxhash = "0.2.1"
 lazy_static = "1.5.0"
 serde = { version = "1.0.216", features = ["derive"] }
 regex = "1.10.6"
+sequila-core = {workspace = true}
+emojis = "0.6.3"
 
 [dev-dependencies]
 exon-test = { path = "../exon-test" }

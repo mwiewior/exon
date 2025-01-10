@@ -26,6 +26,7 @@ use datafusion::{
     logical_expr::LogicalPlan,
     prelude::{DataFrame, SessionConfig, SessionContext},
 };
+use datafusion::physical_optimizer::optimizer::PhysicalOptimizer;
 #[cfg(feature = "deltalake")]
 use deltalake::{aws::register_handlers, delta_datafusion::DeltaTableFactory, open_table};
 
@@ -58,7 +59,8 @@ use crate::{
 };
 
 use object_store::local::LocalFileSystem;
-
+use sequila_core::physical_planner::{IntervalJoinPhysicalOptimizationRule, SeQuiLaQueryPlanner};
+use tracing::log::info;
 #[cfg(feature = "mzml")]
 use crate::datasources::mzml::MzMLScanFunction;
 
@@ -155,12 +157,21 @@ impl ExonSession {
             "FCS",
             "SDF",
         ];
+        //SeQuiLa begin
+        let plugin = emojis::get_by_shortcode("electric_plug").unwrap();
+        info!("Loading SeQuiLaSessionExt {plugin}...");
+        let mut rules = PhysicalOptimizer::new().rules;
+        rules.retain(|rule| rule.name() != "join_selection");
+        rules.push(Arc::new(IntervalJoinPhysicalOptimizationRule));
+
 
         let mut state_builder = SessionStateBuilder::new()
             .with_default_features()
             .with_config(config)
             .with_runtime_env(runtime)
             .with_function_factory(Some(Arc::new(ExonFunctionFactory::default())))
+            .with_query_planner(Arc::new(SeQuiLaQueryPlanner))
+            .with_physical_optimizer_rules(rules)
             .with_query_planner(Arc::new(ExonQueryPlanner::default()));
 
         let table_factories =
