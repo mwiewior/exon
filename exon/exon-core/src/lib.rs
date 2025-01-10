@@ -32,7 +32,7 @@ mod session_context;
 pub use session_context::ExonSession;
 
 #[allow(clippy::cmp_owned)]
-mod config;
+pub mod config;
 pub use config::new_exon_config;
 
 /// Data sources for Exon.
