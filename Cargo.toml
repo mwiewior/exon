@@ -13,7 +13,6 @@ members = [
   "exon/exon-bam",
   "exon/exon-bcf",
   "exon/exon-bed",
-  "exon/exon-bigwig",
   "exon/exon-cli",
   "exon/exon-common",
   "exon/exon-core",

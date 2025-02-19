@@ -38,7 +38,6 @@ use crate::{
             table_provider::{ListingBEDTable, ListingBEDTableOptions},
             BEDOptions,
         },
-        bigwig,
         exon_listing_table_options::ExonListingConfig,
         genbank::table_provider::{ListingGenbankTable, ListingGenbankTableOptions},
         gff::table_provider::{ListingGFFTable, ListingGFFTableOptions},
@@ -617,40 +616,6 @@ impl ExonSession {
     }
 
     /// Read a BigWig zoom file.
-    pub async fn read_bigwig_zoom(
-        &self,
-        table_path: &str,
-        options: bigwig::zoom::ListingTableOptions,
-    ) -> Result<DataFrame, ExonError> {
-        let table_path = ListingTableUrl::parse(table_path)?;
-
-        let table_schema = options.infer_schema()?;
-
-        let config = bigwig::zoom::ListingTableConfig::new(table_path, options);
-        let table = bigwig::zoom::ListingTable::try_new(config, table_schema)?;
-
-        let table = self.session.read_table(Arc::new(table))?;
-
-        Ok(table)
-    }
-
-    /// Read a BigWig view file.
-    pub async fn read_bigwig_view(
-        &self,
-        table_path: &str,
-        options: bigwig::value::ListingTableOptions,
-    ) -> Result<DataFrame, ExonError> {
-        let table_path = ListingTableUrl::parse(table_path)?;
-
-        let table_schema = options.infer_schema()?;
-
-        let config = ExonListingConfig::new_with_options(table_path, options);
-        let table = bigwig::value::ListingTable::new(config, table_schema);
-
-        let table = self.session.read_table(Arc::new(table))?;
-
-        Ok(table)
-    }
 
     /// Read a FASTQ file.
     pub async fn read_fastq(

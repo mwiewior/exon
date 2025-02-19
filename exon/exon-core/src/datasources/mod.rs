@@ -56,7 +56,6 @@ pub mod vcf;
 pub mod gtf;
 
 /// BigWig module.
-pub mod bigwig;
 
 /// FCS module.
 #[cfg(feature = "fcs")]
