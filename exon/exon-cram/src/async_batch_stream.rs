@@ -28,7 +28,7 @@ use crate::{array_builder::CRAMArrayBuilder, CRAMConfig, ObjectStoreFastaReposit
 
 pub struct AsyncBatchStream<R>
 where
-    R: AsyncBufRead + Unpin,
+    R: AsyncBufRead + Unpin + Send,
 {
     reader: AsyncReader<R>,
 
@@ -44,7 +44,7 @@ where
 
 impl<R> AsyncBatchStream<R>
 where
-    R: AsyncBufRead + Unpin,
+    R: AsyncBufRead + Unpin  + Send,
 {
     pub async fn try_new(
         reader: AsyncReader<R>,

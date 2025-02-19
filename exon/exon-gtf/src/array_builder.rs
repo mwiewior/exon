@@ -79,7 +79,7 @@ impl GTFArrayBuilder {
         self.frame
             .append_option(record.frame().map(|frame| frame.to_string()));
 
-        for entry in record.attributes().iter() {
+        for entry in record.attributes().as_ref() {
             self.attributes.keys().append_value(entry.key());
             self.attributes.values().append_value(entry.value());
         }

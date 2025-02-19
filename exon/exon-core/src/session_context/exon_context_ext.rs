@@ -39,7 +39,6 @@ use crate::{
             BEDOptions,
         },
         bigwig,
-        cram::table_provider::{ListingCRAMTable, ListingCRAMTableConfig, ListingCRAMTableOptions},
         exon_listing_table_options::ExonListingConfig,
         genbank::table_provider::{ListingGenbankTable, ListingGenbankTableOptions},
         gff::table_provider::{ListingGFFTable, ListingGFFTableOptions},
@@ -368,25 +367,6 @@ impl ExonSession {
     }
 
     /// Read a CRAM file.
-    pub async fn read_cram(
-        &self,
-        table_path: &str,
-        options: ListingCRAMTableOptions,
-    ) -> crate::Result<DataFrame> {
-        let table_path = ListingTableUrl::parse(table_path)?;
-
-        let table_schema = options
-            .infer_schema(&self.session.state(), &table_path)
-            .await?;
-
-        // TODO: refactor this to use the new config setup
-        let config = ListingCRAMTableConfig::new(table_path, options);
-
-        let table = ListingCRAMTable::try_new(config, table_schema)?;
-        let table = self.session.read_table(Arc::new(table))?;
-
-        Ok(table)
-    }
 
     /// Read a GTF file.
     pub async fn read_gtf(

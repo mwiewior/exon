@@ -37,7 +37,6 @@ use super::{
     bcf::table_provider::{ListingBCFTable, ListingBCFTableOptions},
     bed::table_provider::{ListingBEDTable, ListingBEDTableOptions},
     bigwig,
-    cram::table_provider::{ListingCRAMTableConfig, ListingCRAMTableOptions},
     exon_listing_table_options::ExonListingConfig,
     fasta::table_provider::{ListingFASTATable, ListingFASTATableOptions},
     fastq::table_provider::{ListingFASTQTable, ListingFASTQTableOptions},
@@ -278,22 +277,6 @@ impl ExonListingTableFactory {
 
                 Ok(Arc::new(table))
             }
-            ExonFileType::CRAM => {
-                let options = ListingCRAMTableOptions::try_from(options)?
-                    .with_table_partition_cols(table_partition_cols)
-                    .with_tag_as_struct(exon_config_extension.cram_parse_tags);
-
-                let table_schema = options.infer_schema(state, &table_path).await?;
-
-                let config = ListingCRAMTableConfig::new(table_path, options);
-
-                let table = crate::datasources::cram::table_provider::ListingCRAMTable::try_new(
-                    config,
-                    table_schema,
-                )?;
-
-                Ok(Arc::new(table))
-            }
             ExonFileType::BigWigValue => {
                 let options = super::bigwig::value::ListingTableOptions::new()
                     .with_table_partition_cols(table_partition_cols);
@@ -353,6 +336,7 @@ impl ExonListingTableFactory {
 
                 Ok(Arc::new(table))
             }
+            _  => panic!("Invalid object storage type"),
         }
     }
 }

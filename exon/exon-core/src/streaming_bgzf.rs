@@ -21,14 +21,14 @@ use tokio::io::AsyncReadExt;
 /// A streaming bgzf reader.
 pub struct AsyncBGZFReader<R>
 where
-    R: tokio::io::AsyncRead + Unpin + tokio::io::AsyncBufRead,
+    R: tokio::io::AsyncRead + Unpin + tokio::io::AsyncBufRead + Send,
 {
     inner: bgzf::AsyncReader<R>,
 }
 
 impl<R> AsyncBGZFReader<R>
 where
-    R: tokio::io::AsyncRead + Unpin + tokio::io::AsyncBufRead,
+    R: tokio::io::AsyncRead + Unpin + tokio::io::AsyncBufRead + Send,
 {
     /// Create a new streaming bgzf reader.
     pub fn new(reader: bgzf::AsyncReader<R>) -> Self {

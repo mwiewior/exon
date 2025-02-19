@@ -52,8 +52,6 @@ pub mod sam;
 pub mod vcf;
 
 /// CRAM module.
-pub mod cram;
-
 /// GTF module.
 pub mod gtf;
 
