@@ -44,7 +44,7 @@ tokio = { version = "1", features = ["io-util"] }
 tokio-util = { version = "0.7.13", features = ["compat"] }
 url = { version = "2.5.2" }
 tracing = "0.1.40"
-sequila-core = { git = "https://github.com/biodatageeks/sequila-native.git", rev = "43453dca320cc25a02f440850e3b947b813785c3" }
+sequila-core = { git = "https://github.com/biodatageeks/sequila-native.git", rev = "24555533ce5b8f76a88fc6fedf28d0f5daa25b9e" }
 [profile.release]
 codegen-units = 1
 lto = true
